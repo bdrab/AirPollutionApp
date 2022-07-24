@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block body-content %}
+
+    {% if request.user.is_authenticated %}
+    <h1> Hello {{request.user.username}} </h1>
+    {% else %}
+    <h1> Hello there! :) </h1>
+    {% endif %}
+{% endblock %}
