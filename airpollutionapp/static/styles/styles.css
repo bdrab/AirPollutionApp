@@ -37,11 +37,79 @@
 
 body {
     background: #5CDB95;
+    /*
     padding: 3% 15%;
+    */
+}
+
+
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+    width: 100%;
 }
 
 #map {
-    margin: auto;
-    width: 80%;
-    height: 30vw;
+
+    height: 100vh;
+
+}
+
+.box{
+    position: absolute;
+    top: 80px;
+    margin-left: 2px;
+    z-index: 9999;
+    text-align: center;
+}
+
+.login-img {
+    width: 30px;
+}
+
+
+.data{
+    position: absolute;
+    z-index: 9999;
+    top: 0px;
+    background: white;
+    opacity: 0.7;
+    margin: 10%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    overflow-y: auto;
+    height: 85vh;
+    width:80vw;
+    text-align: center;
+}
+.charts{
+    width: 98%;
+}
+
+
+
+.menu-icon{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background: white;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.items{
+    background: white;
+    border-radius: 50%;
+    border: 3px solid #000000;
+    width: 50px;
+    height: 50px;
+
+}
+
+
+.hide{
+    display:none
 }

@@ -16,17 +16,24 @@
 {% endblock %}
 
 
+
 {% block body-content %}
 
-    {% include 'navbar.html' %}
+    <div class="body-grid">
+      <div id="map">
 
 
-    {% if request.user.is_authenticated %}
-    <h1> Hello {{request.user.username}} </h1>
-    {% else %}
-    <h1> Hello there! :) </h1>
-    {% endif %}
+              <script src="{% static 'js/universal.js' %}" ></script>
+              <script>
+                    {% for marker in markers %}
+                        L.marker([{{marker.lat}}, {{marker.lon}}], {title:"{{marker.id}}"}).addTo(map).bindPopup("{{marker.popup}}");
+                    {% endfor %}
+              </script>
 
+      </div>
+    </div>
+    <div class="chart" id="chart">
+    </div>
 
 
 {% endblock %}
