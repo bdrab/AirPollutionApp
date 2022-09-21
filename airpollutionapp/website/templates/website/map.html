@@ -1,5 +1,6 @@
 {% extends 'main.html' %}
 {% load static %}
+
 {% block head-content %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -8,18 +9,44 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script defer src="{% static 'js/script2.js' %}" ></script>
 
 {% endblock %}
 
 
 {% block body-content %}
-  <div id="map">
-      <script src="{% static 'js/universal.js' %}" ></script>
-      <script>
-        L.marker([{{marker.lat}}, {{marker.lon}}]).addTo(map).bindPopup("{{marker.popup}}");
-    </script>
-  </div>
+    <div class="body-grid">
+        <div class="box">
+            <div class="menu-icon"><a href="" title="Menu"><img src="{% static 'menu.png' %}" class="login-img" alt="login-icon"></a></div>
+            <div class="menu-items hide">
+                <div class="items"><a href="/login" title="Login"> <img src="{% static 'login.png' %}" class="login-img" alt="login-icon"> </a></div>
+                <div class="items" ><a href="#dfs3wfds" title="Register"> <img src="{% static 'login.png' %}" class="login-img" alt="login-icon"> </a></div>
+                <div class="items"><a href="/login" title="Settings"> <img src="{% static 'login.png' %}" class="login-img" alt="login-icon"> </a></div>
+            </div>
+        </div>
+        <div id="map">
+        </div>
+    </div>
 
+    <div class="data">
+        <h1> Czujnik ID: <span class="sensor-id"></span></h1>
+        <div class="charts">
+            <div class="chart" id="chart"></div>
+            <div class="chart1"></div>
+            <div class="chart2"></div>
+            <div class="chart3"></div>
+        </div>
+    </div>
+
+
+<script src="{% static 'js/script.js' %}" ></script>
+
+<script >
+    {% for marker in markers %}
+        L.marker([{{marker.lat}}, {{marker.lon}}], {title:"{{marker.id}}"}).addTo(map).bindPopup("{{marker.popup}}");
+    {% endfor %}
+</script>
 
 
 {% endblock %}
