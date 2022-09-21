@@ -79,6 +79,7 @@ map.on('popupopen', async function(e) {
 });
 
 
+
 map.on('click', function(e) {
     mapa.style.filter = ""
     sensorID.textContent = ""
