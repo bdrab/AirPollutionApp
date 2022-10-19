@@ -11,3 +11,4 @@ urlpatterns = [
     path('return-data/', views.return_data, name="return-data"),
     path('map/', views.maps, name="maps")
 ]
+
