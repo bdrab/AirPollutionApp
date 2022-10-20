@@ -1,14 +1,9 @@
 const dataDiv = document.querySelector(".data")
-dataDiv.classList.toggle("hide")
-
-
-
 const mapa = document.querySelector(".body-grid")
 const chartElement = document.querySelector("#chart")
 const chart_div = document.querySelector("#chart");
 const menuItems = document.querySelector(".menu-items")
 const menu = document.querySelector(".menu-icon")
-
 const sensorID = document.querySelector(".sensor-id")
 
 let chart;
@@ -23,8 +18,8 @@ map.on('popupopen', async function(e) {
     if (typeof chart !== "undefined"){
         chart.destroy();
     };
+
     const marker = e.popup._source;
-    location.hash = marker.options.title
     dataDiv.classList.toggle("hide")
     mapa.style.filter = "blur(8px)"
     let res = await fetch('http://127.0.0.1:8000/return-data/?q=' + marker.options.title);

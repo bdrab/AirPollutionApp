@@ -9,12 +9,7 @@ from .forms import SensorForm
 from django.forms.models import model_to_dict
 
 
-def home_page(request):
-    context = {}
-    return render(request, 'website/index.html', context)
-
-
-def maps(request):
+def index(request):
     q = request.GET.get('q', None)
     print(q)
     sensors = Sensor.objects.all()
@@ -31,7 +26,7 @@ def maps(request):
 def login_page(request):
 
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('index')
 
     if request.method == "POST":
         username = request.POST.get('username')
@@ -54,7 +49,7 @@ def login_page(request):
 def register_page(request):
 
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('index')
 
     form = UserCreationForm()
     context = {"form": form}
@@ -64,17 +59,17 @@ def register_page(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('index')
     return render(request, 'website/register.html', context)
 
 
 def user_logout(request):
     logout(request)
-    return redirect('home')
+    return redirect('index')
 
 
 def add_sensor(request):
-    return redirect('home')
+    return redirect('index')
 
 
 def return_data(request):

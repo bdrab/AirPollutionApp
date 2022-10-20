@@ -1,3 +1,8 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
 .formboot {
     width: 250px;
     margin-left: auto;
@@ -13,7 +18,10 @@
 
 #submit {
     background-color: black;
+    width: 100%;
     color: white;
+    text-align: center;
+    margin-top: 5px;
 }
 
 .control-label {
@@ -25,38 +33,11 @@
     background-color: green;
 }
 
-
-#submit {
-    width: 100%;
-    background-color: black;
-    color: white;
-    text-align: center;
-    margin-top: 5px;
-}
-
-
-body {
-    background: #5CDB95;
-    /*
-    padding: 3% 15%;
-    */
-}
-
-
-body {
-    padding: 0;
-    margin: 0;
-}
 html, body, #map {
-    height: 100%;
-    width: 100%;
-}
-
-#map {
-
     height: 100vh;
-
+    width: 100vw;
 }
+
 
 .box{
     position: absolute;
@@ -90,8 +71,7 @@ html, body, #map {
 }
 
 
-
-.menu-icon{
+.menu-icon, .items{
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -99,16 +79,6 @@ html, body, #map {
     text-align: center;
     padding-top: 10px;
 }
-
-.items{
-    background: white;
-    border-radius: 50%;
-    border: 3px solid #000000;
-    width: 50px;
-    height: 50px;
-
-}
-
 
 .hide{
     display:none
