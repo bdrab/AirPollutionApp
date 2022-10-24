@@ -11,19 +11,23 @@
     crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script defer src="{% static 'js/script-manage-map.js' %}" ></script>
-
 {% endblock %}
 
 
 {% block body-content %}
     <div class="body-grid">
         <div class="box">
-            <div class="menu-icon"><a href="" title="Menu"><img src="{% static 'menu_nowe.png' %}" class="login-img" alt="login-icon"></a></div>
+            <div class="menu-icon"><a href="" title="Menu"><img src="{% static 'menu_nowe.png' %}" class="items-img" alt="login-icon"></a></div>
             <div class="menu-items hide">
-                <div class="items"><a href="/login" title="Login"> <img src="{% static 'login.png' %}" class="login-img" alt="login-icon"> </a></div>
-                <div class="items" ><a href="/register" title="Register"> <img src="{% static 'register.png' %}" class="login-img" alt="login-icon"> </a></div>
-                <div class="items"><a href="/login" title="Add new sensor"> <img src="{% static 'plus.png' %}" class="login-img" alt="login-icon"> </a></div>
-                <div class="items"><a href="/login" title="Settings"> <img src="{% static 'settings.png' %}" class="login-img" alt="login-icon"> </a></div>
+                {% if user.is_authenticated %}
+                    <div class="item"><a href="/add-sensor" title="Add new sensor"> <img src="{% static 'plus.png' %}" class="add-sensor-img items-img" alt="add-sensor-icon"> </a></div>
+                    <div class="item"><a href="/settings" title="Settings"> <img src="{% static 'settings.png' %}" class="setting-img items-img" alt="setting-icon"> </a></div>
+                    <div class="item"><a href="/logout" title="Logout"> <img src="{% static 'login.png' %}" class="logout-img items-img" alt="logout-icon"> </a></div>
+                {% else %}
+                    <div class="item"><a href="/login" title="Login"> <img src="{% static 'login.png' %}" class="login-img items-img" alt="login-icon"> </a></div>
+                    <div class="item" ><a href="/register" title="Register"> <img src="{% static 'register.png' %}" class="register-img items-img" alt="register-icon"> </a></div>
+                {% endif %}
+
             </div>
         </div>
         <div id="map">
@@ -38,6 +42,21 @@
             <div class="chart2"></div>
             <div class="chart3"></div>
         </div>
+    </div>
+
+    <div class="login-modal hide">
+        <form method="POST" action="/login/">
+            {% csrf_token %}
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="Enter Username"/>
+            <br>
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter Password"/>
+                        <br>
+            <input type="submit" value="Login"/>
+        </form>
+        <p>Haven't signed up yet?</p>
+        <a href="{% url 'register' %}">Sign up</a>
     </div>
 
 

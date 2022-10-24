@@ -11,7 +11,6 @@ from django.forms.models import model_to_dict
 
 def index(request):
     q = request.GET.get('q', None)
-    print(q)
     sensors = Sensor.objects.all()
     markers = [{'lat': sensor.lat,
                 'lon': sensor.lon,
@@ -41,7 +40,7 @@ def login_page(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('index')
 
     return render(request, 'website/login.html')
 
@@ -98,3 +97,7 @@ def add_sensor(request):
             return redirect('home')
     context = {"form": form}
     return render(request, 'website/add_sensor.html', context)
+
+
+def settings(request):
+    return redirect('index')

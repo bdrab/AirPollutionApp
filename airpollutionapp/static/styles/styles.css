@@ -47,7 +47,8 @@ html, body, #map {
     text-align: center;
 }
 
-.login-img {
+
+.items-img{
     width: 30px;
 }
 
@@ -58,20 +59,35 @@ html, body, #map {
     top: 0px;
     background: white;
     opacity: 0.7;
-    margin: 10%;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin: 5% 10%;
     overflow-y: auto;
     height: 85vh;
     width:80vw;
     text-align: center;
 }
+
+
+.login-modal{
+    position: absolute;
+    padding: 30px;
+    z-index: 9999;
+    background: white;
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: auto;
+    text-align: center;
+}
+
+
+
 .charts{
     width: 98%;
 }
 
 
-.menu-icon, .items{
+.menu-icon, .item{
     border-radius: 50%;
     width: 50px;
     height: 50px;

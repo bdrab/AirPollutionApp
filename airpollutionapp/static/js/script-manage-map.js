@@ -5,8 +5,20 @@ const chart_div = document.querySelector("#chart");
 const menuItems = document.querySelector(".menu-items")
 const menu = document.querySelector(".menu-icon")
 const sensorID = document.querySelector(".sensor-id")
+const showLoginModal = document.querySelector(".menu-items")
+const loginModal = document.querySelector(".login-modal")
 
 let chart;
+
+
+showLoginModal.addEventListener("click", (event)=>{
+    const targetClassList = [...event.target.classList]
+    if (targetClassList.includes("login-img")){
+        event.preventDefault();
+        loginModal.classList.toggle("hide");
+    }
+
+})
 
 
 map.on('resize', function(e){
@@ -79,6 +91,7 @@ map.on('click', function(e) {
     sensorID.textContent = ""
     menuItems.classList.add("hide")
     dataDiv.classList.add("hide")
+    loginModal.classList.add("hide")
     setTimeout(function(){ map.invalidateSize()}, 100);
     if (typeof chart !== "undefined"){
         chart.destroy();
