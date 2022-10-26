@@ -20,7 +20,6 @@
             <div class="menu-icon"><a href="" title="Menu"><img src="{% static 'menu_nowe.png' %}" class="items-img" alt="login-icon"></a></div>
             <div class="menu-items hide">
                 {% if user.is_authenticated %}
-                    <div class="item"><a href="/add-sensor" title="Add new sensor"> <img src="{% static 'plus.png' %}" class="add-sensor-img items-img" alt="add-sensor-icon"> </a></div>
                     <div class="item"><a href="/settings" title="Settings"> <img src="{% static 'settings.png' %}" class="setting-img items-img" alt="setting-icon"> </a></div>
                     <div class="item"><a href="/logout" title="Logout"> <img src="{% static 'login.png' %}" class="logout-img items-img" alt="logout-icon"> </a></div>
                 {% else %}
@@ -59,16 +58,25 @@
         <p>Haven't signed up yet?</p>
         <a href="{% url 'register' %}">Sign up</a>
     </div>
-
     <div class="register-modal hide">
         <form method="POST" action="register/">
             {% csrf_token %}
-            {{form.as_p}}
+            {{form_register.as_p}}
             <input type="submit" value="Register"/>
         </form>
         <p>Already signed up?</p>
         <a href="{% url 'login' %}">Login</a>
     </div>
+
+    {% else %}
+    <div class="settings-modal hide">
+        <form method="POST" action="add-sensor/" >
+            {% csrf_token %}
+            {{ form_sensor.as_p}}
+            <input type="submit" value="Add Sensor"/>
+        </form>
+    </div>
+
 
     {% endif %}
 

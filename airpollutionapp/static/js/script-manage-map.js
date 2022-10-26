@@ -8,6 +8,8 @@ const sensorID = document.querySelector(".sensor-id")
 const showModals = document.querySelector(".menu-items")
 const loginModal = document.querySelector(".login-modal")
 const registerModal = document.querySelector(".register-modal")
+const settingsModal = document.querySelector(".settings-modal")
+
 let chart;
 
 
@@ -21,7 +23,10 @@ showModals.addEventListener("click", (event)=>{
         event.preventDefault();
         registerModal.classList.toggle("hide");
     }
-
+    if (targetClassList.includes("setting-img")){
+        event.preventDefault();
+        settingsModal.classList.toggle("hide");
+    }
 })
 
 
@@ -95,8 +100,11 @@ map.on('click', function(e) {
     sensorID.textContent = ""
     menuItems.classList.add("hide")
     dataDiv.classList.add("hide")
-    loginModal.classList.add("hide")
-    registerModal.classList.add("hide")
+
+    loginModal && loginModal.classList.add("hide")
+    registerModal && registerModal.classList.add("hide")
+    settingsModal && settingsModal.classList.add("hide")
+
     setTimeout(function(){ map.invalidateSize()}, 100);
     if (typeof chart !== "undefined"){
         chart.destroy();

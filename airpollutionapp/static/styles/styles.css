@@ -81,6 +81,19 @@ html, body, #map {
 }
 
 
+.settings-modal{
+    position: absolute;
+    padding: 30px;
+    z-index: 9999;
+    background: white;
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: auto;
+    text-align: center;
+}
+
 
 .charts{
     width: 98%;

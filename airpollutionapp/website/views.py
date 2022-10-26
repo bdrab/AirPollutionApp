@@ -18,12 +18,15 @@ def index(request):
                 'id': sensor.id
                 } for sensor in sensors]
 
+    context = {}
     if not request.user.is_authenticated:
-        form = UserCreationForm()
-        context = {"markers": markers,
-                   "form": form}
+        form_register = UserCreationForm()
+        context["form_register"] = form_register
     else:
-        context = {"markers": markers}
+        form_sensor = SensorForm()
+        context["form_sensor"] = form_sensor
+
+    context["markers"] = markers
 
     return render(request, 'website/map.html', context)
 
@@ -53,19 +56,14 @@ def login_page(request):
 
 def register_page(request):
 
-    if request.user.is_authenticated:
-        return redirect('index')
-
-    form = UserCreationForm()
-    context = {"form": form}
-
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('index')
-    return render(request, 'website/register.html', context)
+    else:
+        return redirect('index')
 
 
 def user_logout(request):
