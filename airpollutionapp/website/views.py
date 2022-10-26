@@ -18,7 +18,13 @@ def index(request):
                 'id': sensor.id
                 } for sensor in sensors]
 
-    context = {"markers": markers}
+    if not request.user.is_authenticated:
+        form = UserCreationForm()
+        context = {"markers": markers,
+                   "form": form}
+    else:
+        context = {"markers": markers}
+
     return render(request, 'website/map.html', context)
 
 

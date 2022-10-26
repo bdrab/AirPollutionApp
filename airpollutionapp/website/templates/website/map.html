@@ -44,6 +44,7 @@
         </div>
     </div>
 
+    {% if not user.is_authenticated %}
     <div class="login-modal hide">
         <form method="POST" action="/login/">
             {% csrf_token %}
@@ -59,6 +60,17 @@
         <a href="{% url 'register' %}">Sign up</a>
     </div>
 
+    <div class="register-modal hide">
+        <form method="POST" action="register/">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Register"/>
+        </form>
+        <p>Already signed up?</p>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+
+    {% endif %}
 
 <script src="{% static 'js/script-load-map.js' %}" ></script>
 

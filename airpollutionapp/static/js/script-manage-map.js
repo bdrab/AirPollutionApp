@@ -5,17 +5,21 @@ const chart_div = document.querySelector("#chart");
 const menuItems = document.querySelector(".menu-items")
 const menu = document.querySelector(".menu-icon")
 const sensorID = document.querySelector(".sensor-id")
-const showLoginModal = document.querySelector(".menu-items")
+const showModals = document.querySelector(".menu-items")
 const loginModal = document.querySelector(".login-modal")
-
+const registerModal = document.querySelector(".register-modal")
 let chart;
 
 
-showLoginModal.addEventListener("click", (event)=>{
+showModals.addEventListener("click", (event)=>{
     const targetClassList = [...event.target.classList]
     if (targetClassList.includes("login-img")){
         event.preventDefault();
         loginModal.classList.toggle("hide");
+    }
+    if (targetClassList.includes("register-img")){
+        event.preventDefault();
+        registerModal.classList.toggle("hide");
     }
 
 })
@@ -32,7 +36,6 @@ map.on('popupopen', async function(e) {
     };
 
     const marker = e.popup._source;
-    dataDiv.classList.toggle("hide")
     mapa.style.filter = "blur(8px)"
     let res = await fetch('http://127.0.0.1:8000/return-data/?q=' + marker.options.title);
     data = await res.json();
@@ -83,6 +86,7 @@ map.on('popupopen', async function(e) {
 
     console.log(sensorID)
     sensorID.textContent = marker.options.title;
+    dataDiv.classList.toggle("hide");
 });
 
 
@@ -92,6 +96,7 @@ map.on('click', function(e) {
     menuItems.classList.add("hide")
     dataDiv.classList.add("hide")
     loginModal.classList.add("hide")
+    registerModal.classList.add("hide")
     setTimeout(function(){ map.invalidateSize()}, 100);
     if (typeof chart !== "undefined"){
         chart.destroy();

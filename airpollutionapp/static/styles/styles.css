@@ -67,7 +67,7 @@ html, body, #map {
 }
 
 
-.login-modal{
+.login-modal, .register-modal{
     position: absolute;
     padding: 30px;
     z-index: 9999;
