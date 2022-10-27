@@ -69,12 +69,40 @@
     </div>
 
     {% else %}
+<!--    <div class="settings-modal hide">-->
+<!--        <div class="register-form">-->
+<!--            <form method="POST" action="add-sensor/" >-->
+<!--                {% csrf_token %}-->
+<!--                {{ form_sensor.as_p}}-->
+<!--                <input type="submit" value="Add Sensor"/>-->
+<!--            </form>-->
+<!--            <form method="POST" action="add-sensor/" >-->
+<!--                {% csrf_token %}-->
+<!--                {{ form_sensor.as_p}}-->
+<!--                <input type="submit" value="Add Sensor"/>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+
     <div class="settings-modal hide">
-        <form method="POST" action="add-sensor/" >
-            {% csrf_token %}
-            {{ form_sensor.as_p}}
-            <input type="submit" value="Add Sensor"/>
-        </form>
+        <div class="buttons">
+            <button type="button" name="add-sensor-item">Add new sensor!</button>
+            <br>
+            <button type="button" name="user-sensor-item">Manage your sensors!</button>
+        </div>
+        <br><br>
+        <div class="settings-items">
+            <div class="add-sensor-item hide">
+                <form method="POST" action="add-sensor/" >
+                    {% csrf_token %}
+                    {{ form_sensor.as_p}}
+                    <input type="submit" value="Add Sensor"/>
+                </form>
+            </div>
+            <div class="user-sensor-item hide">
+                <h4>Sorry, you currently have no available sensors!</h4>
+            </div>
+        </div>
     </div>
 
 

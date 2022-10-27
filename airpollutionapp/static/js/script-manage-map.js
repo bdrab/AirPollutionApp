@@ -10,6 +10,31 @@ const loginModal = document.querySelector(".login-modal")
 const registerModal = document.querySelector(".register-modal")
 const settingsModal = document.querySelector(".settings-modal")
 
+const buttons = document.querySelector(".buttons")
+const fields = document.querySelector(".settings-items")
+
+
+
+if (buttons) {
+buttons.addEventListener("click", (event)=>{
+    const nodes = fields.childNodes;
+    console.log(event.target.name);
+    nodes.forEach((el)=>{
+        console.log(el);
+        if (el.nodeName.toLowerCase() == 'div'){
+            if([...el.classList].includes(event.target.name)){
+                el.classList.remove("hide");
+            }
+            else{
+                el.classList.add("hide");
+            }
+
+     }
+    })
+})
+}
+
+
 let chart;
 
 
