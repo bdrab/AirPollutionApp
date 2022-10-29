@@ -62,6 +62,7 @@ html, body, #map {
     margin: 5% 10%;
     overflow-y: auto;
     height: 85vh;
+    border-radius:26px;
     width:80vw;
     text-align: center;
 }
@@ -92,7 +93,7 @@ html, body, #map {
     height: 85vh;
     width:80vw;
     top: 0px;
-
+    border-radius:26px;
     overflow-y: auto;
     text-align: center;
 }
@@ -123,3 +124,27 @@ html, body, #map {
 .hide{
     display:none
 }
+
+.btn-item {
+	box-shadow:inset 0px -3px 7px 0px #29bbff;
+	background:linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+	background-color:#2dabf9;
+	border-radius:26px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	padding:10px 100px;
+	text-decoration:none;
+	text-shadow:0px 2px 0px #263666;
+}
+.btn-item:hover {
+	background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	background-color:#0688fa;
+}
+.btn-item:active {
+	position:relative;
+	top:1px;
+}
+

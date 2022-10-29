@@ -1,7 +1,5 @@
 const dataDiv = document.querySelector(".data")
 const mapa = document.querySelector(".body-grid")
-const chartElement = document.querySelector("#chart")
-const chart_div = document.querySelector("#chart");
 const menuItems = document.querySelector(".menu-items")
 const menu = document.querySelector(".menu-icon")
 const sensorID = document.querySelector(".sensor-id")
@@ -18,9 +16,7 @@ const fields = document.querySelector(".settings-items")
 if (buttons) {
 buttons.addEventListener("click", (event)=>{
     const nodes = fields.childNodes;
-    console.log(event.target.name);
     nodes.forEach((el)=>{
-        console.log(el);
         if (el.nodeName.toLowerCase() == 'div'){
             if([...el.classList].includes(event.target.name)){
                 el.classList.remove("hide");
@@ -28,7 +24,6 @@ buttons.addEventListener("click", (event)=>{
             else{
                 el.classList.add("hide");
             }
-
      }
     })
 })
@@ -102,19 +97,17 @@ map.on('popupopen', async function(e) {
           categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
         }
         };
-    chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart = new ApexCharts(document.querySelector(".chart0"), options);
     chart.render();
 
-        chart1 = new ApexCharts(document.querySelector(".chart1"), options);
+    chart1 = new ApexCharts(document.querySelector(".chart1"), options);
     chart1.render();
 
-        chart2 = new ApexCharts(document.querySelector(".chart2"), options);
+    chart2 = new ApexCharts(document.querySelector(".chart2"), options);
     chart2.render();
 
-        chart3 = new ApexCharts(document.querySelector(".chart3"), options);
+    chart3 = new ApexCharts(document.querySelector(".chart3"), options);
     chart3.render();
-
-    console.log(sensorID)
     sensorID.textContent = marker.options.title;
     dataDiv.classList.toggle("hide");
 });

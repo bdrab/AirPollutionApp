@@ -7,10 +7,13 @@ from .models import Sensor, Data
 from .forms import SensorForm
 # Create your views here.
 from django.forms.models import model_to_dict
+from django.views.decorators.http import require_http_methods
 
 
 def index(request):
     q = request.GET.get('q', None)
+    # print(help(type(request)))
+    print(request.get_full_path_info())
     sensors = Sensor.objects.all()
     markers = [{'lat': sensor.lat,
                 'lon': sensor.lon,
@@ -27,6 +30,7 @@ def index(request):
         context["form_sensor"] = form_sensor
 
     context["markers"] = markers
+    context['sensors'] = sensors
 
     return render(request, 'website/map.html', context)
 
@@ -71,10 +75,6 @@ def user_logout(request):
     return redirect('index')
 
 
-def add_sensor(request):
-    return redirect('index')
-
-
 def return_data(request):
     pk = int(request.GET.get('q'))
     sensor = Sensor.objects.get(pk=pk)
@@ -90,17 +90,22 @@ def return_data(request):
     return JsonResponse(data_to_send)
 
 
+@require_http_methods(["POST"])
 def add_sensor(request):
-    form = SensorForm()
-    if request.method == "POST":
-        form = SensorForm(request.POST)
-        if form.is_valid():
-            sensor = form.save(commit=False)
-            sensor.owner = request.user
-            sensor.save()
-            return redirect('home')
-    context = {"form": form}
-    return render(request, 'website/add_sensor.html', context)
+    form = SensorForm(request.POST)
+    if form.is_valid():
+        sensor = form.save(commit=False)
+        sensor.owner = request.user
+        sensor.save()
+        return redirect('index')
+
+
+def delete_sensor(request, sensorid):
+    sensor = Sensor.objects.get(id=sensorid)
+    if sensor.owner == request.user:
+        sensor.delete()
+    return redirect('index')
+
 
 
 def settings(request):
