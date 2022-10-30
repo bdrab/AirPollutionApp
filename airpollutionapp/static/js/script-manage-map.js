@@ -66,10 +66,6 @@ map.on('popupopen', async function(e) {
     data = await res.json();
 
     const options = {
-          series: [{
-            name: "Desktops",
-            data: [0, 0, 0, 0, 0, 10, 10, 50, 100]
-        }],
           chart: {
           height: 350,
           type: 'line',
@@ -84,7 +80,6 @@ map.on('popupopen', async function(e) {
           curve: 'straight'
         },
         title: {
-          text: 'Product Trends by Month',
           align: 'left'
         },
         grid: {
@@ -94,20 +89,63 @@ map.on('popupopen', async function(e) {
           },
         },
         xaxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+          categories: data.data.dates,
         }
         };
+
+
+
+    options["series"] = [{
+        name: "PM1",
+        data: data.data.pm1,
+    }]
+    options["title"]["text"] = 'Air Pollution PM1 by Day'
+
     chart = new ApexCharts(document.querySelector(".chart0"), options);
     chart.render();
 
+
+
+    options["series"] = [{
+        name: "PM2.5",
+        data: data.data.pm25,
+    }]
+    options["title"]["text"] = 'Air Pollution PM2.5 by Day'
     chart1 = new ApexCharts(document.querySelector(".chart1"), options);
     chart1.render();
 
+
+
+    options["series"] = [{
+        name: "PM10",
+        data: data.data.pm10,
+    }]
+    options["title"]["text"] = 'Air Pollution PM10 by Day'
     chart2 = new ApexCharts(document.querySelector(".chart2"), options);
     chart2.render();
 
+
+
+    options["series"] = [{
+        name: "Temperature",
+        data: data.data.temperature,
+    }]
+    options["title"]["text"] = 'Temperature by Day'
     chart3 = new ApexCharts(document.querySelector(".chart3"), options);
     chart3.render();
+
+
+
+    options["series"] = [{
+        name: "Pressure",
+        data: data.data.pressure,
+    }]
+    options["title"]["text"] = 'Pressure by Day'
+    chart4 = new ApexCharts(document.querySelector(".chart4"), options);
+    chart4.render();
+
+
+
     sensorID.textContent = marker.options.title;
     dataDiv.classList.toggle("hide");
 });

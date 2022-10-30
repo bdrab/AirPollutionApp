@@ -78,15 +78,28 @@ def user_logout(request):
 def return_data(request):
     pk = int(request.GET.get('q'))
     sensor = Sensor.objects.get(pk=pk)
-
     data = list(sensor.data_set.all())
-    data_dict = list(map(model_to_dict, data))
 
+    dates = list(reversed([record.created for record in data]))
+    pm1 = list(reversed([record.pm1 for record in data]))
+    pm25 = list(reversed([record.pm25 for record in data]))
+    pm10 = list(reversed([record.pm10 for record in data]))
+    temperature = list(reversed([record.temperature for record in data]))
+    pressure = list(reversed([record.pressure for record in data]))
+
+    data_dict = {
+        "dates": dates,
+        "pm1": pm1,
+        "pm25": pm25,
+        "pm10": pm10,
+        "temperature": temperature,
+        "pressure": pressure
+    }
     data_to_send = {
         "sensor":  pk,
         "data":  data_dict,
     }
-    print(data_to_send)
+
     return JsonResponse(data_to_send)
 
 
