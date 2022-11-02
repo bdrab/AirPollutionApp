@@ -11,6 +11,7 @@ const settingsModal = document.querySelector(".settings-modal")
 const buttons = document.querySelector(".buttons")
 const fields = document.querySelector(".settings-items")
 
+const chartsError = document.querySelector(".charts-error")
 
 
 if (buttons) {
@@ -55,96 +56,107 @@ map.on('resize', function(e){
 });
 
 
-map.on('popupopen', async function(e) {
-    if (typeof chart !== "undefined"){
+function deleteCharts(){
+    if(typeof chart !== "undefined"){
         chart.destroy();
-    };
+        chart1.destroy();
+        chart2.destroy();
+        chart3.destroy();
+        chart4.destroy();
+    }
+}
 
+
+map.on('popupopen', async function(e){
     const marker = e.popup._source;
     mapa.style.filter = "blur(8px)"
     let res = await fetch('http://127.0.0.1:8000/return-data/?q=' + marker.options.title);
     data = await res.json();
 
-    const options = {
-          chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: true
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        title: {
-          align: 'left'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: data.data.dates,
-        }
-        };
+    if (data.data.dates.length !== 0){
+        chartsError.innerHTML = ""
+        const options = {
+              chart: {
+              height: 350,
+              type: 'line',
+              zoom: {
+                enabled: true
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            stroke: {
+              curve: 'straight'
+            },
+            title: {
+              align: 'left'
+            },
+            grid: {
+              row: {
+                colors: ['#f3f3f3'], // takes an array which will be repeated on columns
+                opacity: 0.5
+              },
+            },
+            xaxis: {
+              categories: data.data.dates,
+            }
+            };
 
 
 
-    options["series"] = [{
-        name: "PM1",
-        data: data.data.pm1,
-    }]
-    options["title"]["text"] = 'Air Pollution PM1 by Day'
+        options["series"] = [{
+            name: "PM1",
+            data: data.data.pm1,
+        }]
+        options["title"]["text"] = 'Air Pollution PM1 by Day'
 
-    chart = new ApexCharts(document.querySelector(".chart0"), options);
-    chart.render();
-
-
-
-    options["series"] = [{
-        name: "PM2.5",
-        data: data.data.pm25,
-    }]
-    options["title"]["text"] = 'Air Pollution PM2.5 by Day'
-    chart1 = new ApexCharts(document.querySelector(".chart1"), options);
-    chart1.render();
+        chart = new ApexCharts(document.querySelector(".chart0"), options);
+        chart.render();
 
 
 
-    options["series"] = [{
-        name: "PM10",
-        data: data.data.pm10,
-    }]
-    options["title"]["text"] = 'Air Pollution PM10 by Day'
-    chart2 = new ApexCharts(document.querySelector(".chart2"), options);
-    chart2.render();
+        options["series"] = [{
+            name: "PM2.5",
+            data: data.data.pm25,
+        }]
+        options["title"]["text"] = 'Air Pollution PM2.5 by Day'
+        chart1 = new ApexCharts(document.querySelector(".chart1"), options);
+        chart1.render();
 
 
 
-    options["series"] = [{
-        name: "Temperature",
-        data: data.data.temperature,
-    }]
-    options["title"]["text"] = 'Temperature by Day'
-    chart3 = new ApexCharts(document.querySelector(".chart3"), options);
-    chart3.render();
+        options["series"] = [{
+            name: "PM10",
+            data: data.data.pm10,
+        }]
+        options["title"]["text"] = 'Air Pollution PM10 by Day'
+        chart2 = new ApexCharts(document.querySelector(".chart2"), options);
+        chart2.render();
 
 
 
-    options["series"] = [{
-        name: "Pressure",
-        data: data.data.pressure,
-    }]
-    options["title"]["text"] = 'Pressure by Day'
-    chart4 = new ApexCharts(document.querySelector(".chart4"), options);
-    chart4.render();
+        options["series"] = [{
+            name: "Temperature",
+            data: data.data.temperature,
+        }]
+        options["title"]["text"] = 'Temperature by Day'
+        chart3 = new ApexCharts(document.querySelector(".chart3"), options);
+        chart3.render();
 
 
+
+        options["series"] = [{
+            name: "Pressure",
+            data: data.data.pressure,
+        }]
+        options["title"]["text"] = 'Pressure by Day'
+        chart4 = new ApexCharts(document.querySelector(".chart4"), options);
+        chart4.render();
+    }
+    else{
+        chartsError.innerHTML = "<h5>No data available</h5>"
+    }
 
     sensorID.textContent = marker.options.title;
     dataDiv.classList.toggle("hide");
@@ -162,9 +174,7 @@ map.on('click', function(e) {
     settingsModal && settingsModal.classList.add("hide")
 
     setTimeout(function(){ map.invalidateSize()}, 100);
-    if (typeof chart !== "undefined"){
-        chart.destroy();
-    };
+    deleteCharts();
 });
 
 
