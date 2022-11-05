@@ -29,11 +29,34 @@
 
             </div>
         </div>
+        {% if user.is_authenticated %}
+            <div class="user-menu">
+                <h4>Hi {{user}}</h4>
+                <br>
+                <h5>Your sensors: </h5>
+                 <ol>
+                    {% for sensor in sensors %}
+                        <li class="user-sensor" data-lat="{{sensor.lat}}" data-lon="{{sensor.lon}}"> {{sensor.serial}} --- {{sensor.description}}</li>
+                    {% endfor %}
+                </ol>
+                <br>
+                <h5>Your favourite sensors: </h5>
+                 <ol>
+                    {% for sensor in favouriteSensors %}
+                        <li class="user-sensor" data-lat="{{sensor.lat}}" data-lon="{{sensor.lon}}"> {{sensor.serial}} --- {{sensor.description}}</li>
+                    {% endfor %}
+                </ol>
+                <br>
+
+
+            </div>
+        {% endif %}
         <div id="map">
         </div>
     </div>
 
     <div class="data hide">
+         <img src="{% static 'non-favourite.png' %}" alt="favourite photo" class="favourite-img">
         <h4> Sensor ID: <span class="sensor-id"></span></h4>
         <div class="charts">
             <div class="charts-error"></div>

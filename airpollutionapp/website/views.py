@@ -5,15 +5,12 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import Sensor, Data
 from .forms import SensorForm
-# Create your views here.
-from django.forms.models import model_to_dict
 from django.views.decorators.http import require_http_methods
+from django.forms.models import model_to_dict
 
 
 def index(request):
     q = request.GET.get('q', None)
-    # print(help(type(request)))
-    print(request.get_full_path_info())
     sensors = Sensor.objects.all()
     markers = [{'lat': sensor.lat,
                 'lon': sensor.lon,
@@ -29,8 +26,11 @@ def index(request):
         form_sensor = SensorForm()
         context["form_sensor"] = form_sensor
 
+    user = User.objects.get(id=request.user.id)
+    favourite_sensors = [model_to_dict(value.sensor) for value in user.favorites.all()]
     context["markers"] = markers
     context['sensors'] = sensors
+    context['favouriteSensors'] = favourite_sensors
 
     return render(request, 'website/map.html', context)
 
@@ -117,9 +117,4 @@ def delete_sensor(request, sensorid):
     sensor = Sensor.objects.get(id=sensorid)
     if sensor.owner == request.user:
         sensor.delete()
-    return redirect('index')
-
-
-
-def settings(request):
     return redirect('index')

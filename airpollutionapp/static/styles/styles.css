@@ -68,6 +68,20 @@ html, body, #map {
 }
 
 
+.favourite-img{
+    width: 50px;
+    position: absolute;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    margin-top: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+
+}
+
+
+
 .login-modal, .register-modal{
     position: absolute;
     padding: 30px;
@@ -81,6 +95,29 @@ html, body, #map {
     overflow-y: auto;
     text-align: center;
 }
+
+.user-menu{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 15px;
+    margin-top: 10px;
+    margin-right: 10px;
+    z-index: 9999;
+    background: white;
+    border-radius:26px;
+    border-style: dotted;
+    border-color: #808080;
+    opacity: 1;
+    text-align: center;
+}
+
+.user-sensor{
+    cursor: pointer;
+}
+
+
+
 
 
 .settings-modal{

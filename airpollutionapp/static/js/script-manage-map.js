@@ -13,11 +13,27 @@ const fields = document.querySelector(".settings-items")
 
 const chartsError = document.querySelector(".charts-error")
 
+const userSensors = document.querySelector(".user-menu")
+
+const favouriteImg = document.querySelector(".favourite-img")
+
+let chart;
+
+
+function deleteCharts(){
+    if(typeof chart !== "undefined"){
+        chart.destroy();
+        chart1.destroy();
+        chart2.destroy();
+        chart3.destroy();
+        chart4.destroy();
+    }
+}
 
 if (buttons) {
-buttons.addEventListener("click", (event)=>{
+buttons.addEventListener("click", event => {
     const nodes = fields.childNodes;
-    nodes.forEach((el)=>{
+    nodes.forEach(el => {
         if (el.nodeName.toLowerCase() == 'div'){
             if([...el.classList].includes(event.target.name)){
                 el.classList.remove("hide");
@@ -31,10 +47,7 @@ buttons.addEventListener("click", (event)=>{
 }
 
 
-let chart;
-
-
-showModals.addEventListener("click", (event)=>{
+showModals.addEventListener("click", event => {
     const targetClassList = [...event.target.classList]
     if (targetClassList.includes("login-img")){
         event.preventDefault();
@@ -51,23 +64,7 @@ showModals.addEventListener("click", (event)=>{
 })
 
 
-map.on('resize', function(e){
-    map.setView([52.10, 19.52], 5);
-});
-
-
-function deleteCharts(){
-    if(typeof chart !== "undefined"){
-        chart.destroy();
-        chart1.destroy();
-        chart2.destroy();
-        chart3.destroy();
-        chart4.destroy();
-    }
-}
-
-
-map.on('popupopen', async function(e){
+map.on('popupopen', async e => {
     const marker = e.popup._source;
     mapa.style.filter = "blur(8px)"
     let res = await fetch('http://127.0.0.1:8000/return-data/?q=' + marker.options.title);
@@ -163,7 +160,7 @@ map.on('popupopen', async function(e){
 });
 
 
-map.on('click', function(e) {
+map.on('click', e => {
     mapa.style.filter = ""
     sensorID.textContent = ""
     menuItems.classList.add("hide")
@@ -178,7 +175,26 @@ map.on('click', function(e) {
 });
 
 
-menu.addEventListener("click", function(e){
+menu.addEventListener("click", e => {
     e.preventDefault();
     menuItems.classList.toggle("hide")
     })
+
+
+userSensors.addEventListener("click", event => {
+    if([...event.target.classList].includes("user-sensor")){
+        map.setView([event.target.dataset.lat, event.target.dataset.lon], map.getZoom());
+    }
+})
+
+
+favouriteImg.addEventListener("click", event => {
+    if ([...event.target.classList].includes("favourite")){
+        event.target.src = "static/non-favourite.png";
+        event.target.classList.toggle("favourite")
+    }
+    else{
+        event.target.src = "static/favourite.png";
+        event.target.classList.toggle("favourite")
+    }
+})
