@@ -56,7 +56,9 @@
     </div>
 
     <div class="data hide">
-         <img src="{% static 'non-favourite.png' %}" alt="favourite photo" class="favourite-img">
+        {% if user.is_authenticated %}
+            <img src="{% static 'non-favourite.png' %}" alt="favourite photo" class="favourite-img">
+        {% endif %}
         <h4> Sensor ID: <span class="sensor-id"></span></h4>
         <div class="charts">
             <div class="charts-error"></div>
@@ -129,7 +131,7 @@
     {% for marker in markers %}
         L.marker([{{marker.lat}}, {{marker.lon}}], {title:"{{marker.id}}"}).addTo(map).bindPopup("{{marker.popup}}");
     {% endfor %}
+    let favouriteSensorList = {{favouriteSensorListArr}};
 </script>
-
 
 {% endblock %}

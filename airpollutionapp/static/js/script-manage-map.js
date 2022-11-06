@@ -70,6 +70,15 @@ map.on('popupopen', async e => {
     let res = await fetch('http://127.0.0.1:8000/return-data/?q=' + marker.options.title);
     data = await res.json();
 
+    if(favouriteImg){
+        if (favouriteSensorList.includes(Number(marker.options.title))){
+            favouriteImg.src = "static/favourite.png";
+            favouriteImg.classList.add("favourite")
+        }else{
+            favouriteImg.src = "static/non-favourite.png";
+            favouriteImg.classList.remove("favourite")
+        }
+    }
     if (data.data.dates.length !== 0){
         chartsError.innerHTML = ""
         const options = {
@@ -91,7 +100,7 @@ map.on('popupopen', async e => {
             },
             grid: {
               row: {
-                colors: ['#f3f3f3'], // takes an array which will be repeated on columns
+                colors: ['#f3f3f3'],
                 opacity: 0.5
               },
             },
@@ -150,8 +159,7 @@ map.on('popupopen', async e => {
         options["title"]["text"] = 'Pressure by Day'
         chart4 = new ApexCharts(document.querySelector(".chart4"), options);
         chart4.render();
-    }
-    else{
+    }else{
         chartsError.innerHTML = "<h5>No data available</h5>"
     }
 
@@ -180,21 +188,32 @@ menu.addEventListener("click", e => {
     menuItems.classList.toggle("hide")
     })
 
+    if(userSensors !== null){
+    userSensors.addEventListener("click", event => {
+        if([...event.target.classList].includes("user-sensor")){
+            map.setView([event.target.dataset.lat, event.target.dataset.lon], map.getZoom());
+        }
+    })
+}
 
-userSensors.addEventListener("click", event => {
-    if([...event.target.classList].includes("user-sensor")){
-        map.setView([event.target.dataset.lat, event.target.dataset.lon], map.getZoom());
-    }
-})
-
-
-favouriteImg.addEventListener("click", event => {
-    if ([...event.target.classList].includes("favourite")){
-        event.target.src = "static/non-favourite.png";
-        event.target.classList.toggle("favourite")
-    }
-    else{
-        event.target.src = "static/favourite.png";
-        event.target.classList.toggle("favourite")
-    }
-})
+if(favouriteImg !== null){
+    favouriteImg.addEventListener("click", async event => {
+        let operation = "";
+        console.log(favouriteSensorList);
+        if ([...event.target.classList].includes("favourite")){
+            event.target.src = "static/non-favourite.png";
+            event.target.classList.toggle("favourite");
+            operation = "delete"
+            const elementIndex = favouriteSensorList.indexOf(Number(sensorID.textContent));
+            favouriteSensorList.splice(elementIndex, 1);
+        }
+        else{
+            event.target.src = "static/favourite.png";
+            event.target.classList.toggle("favourite");
+            operation = "add";
+            favouriteSensorList.push(Number(sensorID.textContent));
+        }
+        let response = await fetch('http://127.0.0.1:8000/modify-favourite/' + operation + '/' + sensorID.textContent);
+        data = await response.json();
+    })
+}
