@@ -41,10 +41,7 @@
                 </ol>
                 <br>
                 <h5>Your favourite sensors: </h5>
-                 <ol>
-                    {% for sensor in favouriteSensors %}
-                        <li class="user-sensor" data-lat="{{sensor.lat}}" data-lon="{{sensor.lon}}"> {{sensor.serial}} --- {{sensor.description}}</li>
-                    {% endfor %}
+                <ol class="favourite-sensors">
                 </ol>
                 <br>
 
@@ -131,7 +128,8 @@
     {% for marker in markers %}
         L.marker([{{marker.lat}}, {{marker.lon}}], {title:"{{marker.id}}"}).addTo(map).bindPopup("{{marker.popup}}");
     {% endfor %}
-    let favouriteSensorList = {{favouriteSensorListArr}};
+    let favouriteSensors  = {{favouriteSensorsList|safe}}
+    let allSensors = {{allSensors|safe}}
 </script>
 
 {% endblock %}

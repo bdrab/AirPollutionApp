@@ -17,6 +17,8 @@ const userSensors = document.querySelector(".user-menu")
 
 const favouriteImg = document.querySelector(".favourite-img")
 
+const favouriteSensorsDIV = document.querySelector(".favourite-sensors")
+
 let chart;
 
 
@@ -71,7 +73,7 @@ map.on('popupopen', async e => {
     data = await res.json();
 
     if(favouriteImg){
-        if (favouriteSensorList.includes(Number(marker.options.title))){
+        if (favouriteSensors[Number(marker.options.title)]){
             favouriteImg.src = "static/favourite.png";
             favouriteImg.classList.add("favourite")
         }else{
@@ -199,21 +201,38 @@ menu.addEventListener("click", e => {
 if(favouriteImg !== null){
     favouriteImg.addEventListener("click", async event => {
         let operation = "";
-        console.log(favouriteSensorList);
+
         if ([...event.target.classList].includes("favourite")){
             event.target.src = "static/non-favourite.png";
             event.target.classList.toggle("favourite");
             operation = "delete"
-            const elementIndex = favouriteSensorList.indexOf(Number(sensorID.textContent));
-            favouriteSensorList.splice(elementIndex, 1);
+            delete favouriteSensors[Number(sensorID.textContent)];
         }
         else{
             event.target.src = "static/favourite.png";
             event.target.classList.toggle("favourite");
             operation = "add";
-            favouriteSensorList.push(Number(sensorID.textContent));
+            favouriteSensors[Number(sensorID.textContent)] = allSensors[sensorID.textContent]
         }
         let response = await fetch('http://127.0.0.1:8000/modify-favourite/' + operation + '/' + sensorID.textContent);
         data = await response.json();
+        updateFavourites();
     })
 }
+
+function updateFavourites(){
+    let contentHTML = ""
+    favouriteSensorsDIV.innerHTML = ""
+
+    for(const id in favouriteSensors){
+
+        const li = document.createElement('li');
+        li.setAttribute('class', "user-sensor");
+        li.setAttribute('data-lat', favouriteSensors[id].lat);
+        li.setAttribute('data-lon', favouriteSensors[id].lon);
+        li.textContent = `${favouriteSensors[id].serial} --- ${favouriteSensors[id].description}`;
+        favouriteSensorsDIV.appendChild(li);
+    }
+}
+
+updateFavourites();

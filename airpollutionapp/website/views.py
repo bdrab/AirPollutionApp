@@ -2,35 +2,55 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 from django.http import JsonResponse
-from .models import Sensor, Data
-from .forms import SensorForm
+
 from django.views.decorators.http import require_http_methods
 from django.forms.models import model_to_dict
 
+from .models import Sensor, Data, Favorite
+from .forms import SensorForm
+
 
 def index(request):
-    q = request.GET.get('q', None)
+    context = {}
     sensors = Sensor.objects.all()
+
+    all_sensors_list = {sensor.id: {'id': sensor.id,
+                                    'serial': sensor.serial,
+                                    'lat': float(sensor.lat),
+                                    'lon': float(sensor.lon),
+                                    'description': sensor.description,
+                                    'owner': sensor.owner.id}
+                        for sensor in sensors}
+
     markers = [{'lat': sensor.lat,
                 'lon': sensor.lon,
                 'popup': sensor.description,
                 'id': sensor.id
                 } for sensor in sensors]
 
-    context = {}
     if not request.user.is_authenticated:
         form_register = UserCreationForm()
         context["form_register"] = form_register
+        favourite_sensors_list = {}
     else:
         form_sensor = SensorForm()
         context["form_sensor"] = form_sensor
+        user = User.objects.get(id=request.user.id)
+        favourite_sensors_list = {value.sensor.id: {'id': value.sensor.id,
+                                                    'serial': value.sensor.serial,
+                                                    'lat': float(value.sensor.lat),
+                                                    'lon': float(value.sensor.lon),
+                                                    'description': value.sensor.description,
+                                                    'owner': value.sensor.owner.id}
+                                  for value in user.favorites.all()}
 
-    user = User.objects.get(id=request.user.id)
-    favourite_sensors = [model_to_dict(value.sensor) for value in user.favorites.all()]
     context["markers"] = markers
     context['sensors'] = sensors
-    context['favouriteSensors'] = favourite_sensors
+    context['favouriteSensorsList'] = favourite_sensors_list
+    context['allSensors'] = all_sensors_list
 
     return render(request, 'website/map.html', context)
 
@@ -118,3 +138,24 @@ def delete_sensor(request, sensorid):
     if sensor.owner == request.user:
         sensor.delete()
     return redirect('index')
+
+
+@login_required
+def modify_favourite(request, operation, favouriteid):
+
+    response = {
+        "favourite":  favouriteid,
+        "operation":  operation,
+        "status": "failed"
+    }
+
+    if request.user.is_authenticated:
+        try:
+            favourite = Favorite.objects.get(sensor=Sensor.objects.get(id=favouriteid))
+        except Favorite.DoesNotExist:
+            Favorite.objects.create(user=User.objects.get(id=request.user.id), sensor=Sensor.objects.get(id=favouriteid))
+            return JsonResponse(response)
+
+        favourite.delete()
+    response["status"] = "successful"
+    return JsonResponse(response)
