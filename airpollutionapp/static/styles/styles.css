@@ -110,14 +110,16 @@ html, body, #map {
     border-color: #808080;
     opacity: 1;
     text-align: center;
+    width: 350px;
 }
 
-.user-sensor{
+.user-sensor, .your-sensors-btn, .your-favourite-btn{
     cursor: pointer;
 }
 
-
-
+.menu-div{
+    text-align: left;
+}
 
 
 .settings-modal{
@@ -186,3 +188,7 @@ html, body, #map {
 	top:1px;
 }
 
+
+.expand-img{
+    width: 15px;
+}

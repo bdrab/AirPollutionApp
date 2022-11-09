@@ -16,8 +16,13 @@ const chartsError = document.querySelector(".charts-error")
 const userSensors = document.querySelector(".user-menu")
 
 const favouriteImg = document.querySelector(".favourite-img")
-
 const favouriteSensorsDIV = document.querySelector(".favourite-sensors")
+
+const userSensorsButton = document.querySelector(".your-sensors-btn")
+const userFavouriteButton = document.querySelector(".your-favourite-btn")
+const userSensorsDIV = document.querySelector(".your-sensors-div")
+const userFavouriteDIV = document.querySelector(".your-favourite-div")
+
 
 let chart;
 
@@ -219,20 +224,36 @@ if(favouriteImg !== null){
         updateFavourites();
     })
 }
+if(favouriteSensorsDIV !== null){
+    function updateFavourites(){
+        let contentHTML = ""
+        favouriteSensorsDIV.innerHTML = ""
 
-function updateFavourites(){
-    let contentHTML = ""
-    favouriteSensorsDIV.innerHTML = ""
+        for(const id in favouriteSensors){
 
-    for(const id in favouriteSensors){
-
-        const li = document.createElement('li');
-        li.setAttribute('class', "user-sensor");
-        li.setAttribute('data-lat', favouriteSensors[id].lat);
-        li.setAttribute('data-lon', favouriteSensors[id].lon);
-        li.textContent = `${favouriteSensors[id].serial} --- ${favouriteSensors[id].description}`;
-        favouriteSensorsDIV.appendChild(li);
+            const li = document.createElement('li');
+            li.setAttribute('class', "user-sensor");
+            li.setAttribute('data-lat', favouriteSensors[id].lat);
+            li.setAttribute('data-lon', favouriteSensors[id].lon);
+            li.textContent = `${favouriteSensors[id].serial} --- ${favouriteSensors[id].description}`;
+            favouriteSensorsDIV.appendChild(li);
+        }
     }
-}
+
+    userSensorsButton.addEventListener("click", e => {
+        userSensorsDIV.classList.toggle("hide")
+    })
+
+    userFavouriteButton.addEventListener("click", e => {
+        userFavouriteDIV.classList.toggle("hide")
+    })
+
 
 updateFavourites();
+}
+
+
+
+
+
+
