@@ -23,6 +23,11 @@ const userFavouriteButton = document.querySelector(".your-favourite-btn")
 const userSensorsDIV = document.querySelector(".your-sensors-div")
 const userFavouriteDIV = document.querySelector(".your-favourite-div")
 
+const expandAll = document.querySelector(".expand-all")
+const expandFavourite = document.querySelector(".expand-favourite")
+
+
+
 
 let chart;
 
@@ -242,10 +247,22 @@ if(favouriteSensorsDIV !== null){
 
     userSensorsButton.addEventListener("click", e => {
         userSensorsDIV.classList.toggle("hide")
+        if (![...userSensorsDIV.classList].includes("hide")){
+            expandAll.src = "static/collapse.png"
+        }
+        else{
+            expandAll.src = "static/expand.png"
+        }
     })
 
     userFavouriteButton.addEventListener("click", e => {
         userFavouriteDIV.classList.toggle("hide")
+        if (![...userFavouriteDIV.classList].includes("hide")){
+            expandFavourite.src = "static/collapse.png"
+        }
+        else{
+            expandFavourite.src = "static/expand.png"
+        }
     })
 
 
