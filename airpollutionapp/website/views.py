@@ -66,12 +66,12 @@ def login_page(request):
 
         try:
             user = User.objects.get(username=username)
+
         except:
             return render(request, 'website/login.html')
 
         user = authenticate(request, username=username, password=password)
-
-        if user is not None:
+        if user:
             login(request, user)
             return redirect('index')
 
