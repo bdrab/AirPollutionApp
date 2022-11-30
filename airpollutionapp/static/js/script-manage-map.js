@@ -79,7 +79,7 @@ showModals.addEventListener("click", event => {
 map.on('popupopen', async e => {
     const marker = e.popup._source;
     mapa.style.filter = "blur(8px)"
-    let res = await fetch('http://127.0.0.1:8000/return-data/?q=' + marker.options.title);
+    let res = await fetch('http://127.0.0.1:8000/api/return-data/?q=' + marker.options.title);
     data = await res.json();
 
     if(favouriteImg){

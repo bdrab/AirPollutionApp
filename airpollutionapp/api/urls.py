@@ -4,4 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.home_page, name="api-home"),
+    path('return-data/', views.return_data, name="return-data")
 ]

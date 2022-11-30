@@ -9,7 +9,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name="logout"),
     path('add-sensor/', views.add_sensor, name="add-sensor"),
     path('delete-sensor/<int:sensorid>', views.delete_sensor, name="delete-sensor"),
-    path('return-data/', views.return_data, name="return-data"),
     path('modify-favourite/<str:operation>/<int:favouriteid>', views.modify_favourite, name="modify-favourite")
 ]
 

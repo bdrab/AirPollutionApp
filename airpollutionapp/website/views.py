@@ -3,12 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
 from django.http import JsonResponse
-
 from django.views.decorators.http import require_http_methods
-from django.forms.models import model_to_dict
-
 from .models import Sensor, Data, Favorite
 from .forms import SensorForm
 
@@ -39,6 +35,7 @@ def index(request):
         form_sensor = SensorForm()
         context["form_sensor"] = form_sensor
         user = User.objects.get(id=request.user.id)
+        # TODO: delete sensor from favourite list if sensor is delete from database
         favourite_sensors_list = {value.sensor.id: {'id': value.sensor.id,
                                                     'serial': value.sensor.serial,
                                                     'lat': float(value.sensor.lat),
@@ -93,34 +90,6 @@ def register_page(request):
 def user_logout(request):
     logout(request)
     return redirect('index')
-
-
-def return_data(request):
-    pk = int(request.GET.get('q'))
-    sensor = Sensor.objects.get(pk=pk)
-    data = list(sensor.data_set.all())
-
-    dates = list(reversed([record.created for record in data]))
-    pm1 = list(reversed([record.pm1 for record in data]))
-    pm25 = list(reversed([record.pm25 for record in data]))
-    pm10 = list(reversed([record.pm10 for record in data]))
-    temperature = list(reversed([record.temperature for record in data]))
-    pressure = list(reversed([record.pressure for record in data]))
-
-    data_dict = {
-        "dates": dates,
-        "pm1": pm1,
-        "pm25": pm25,
-        "pm10": pm10,
-        "temperature": temperature,
-        "pressure": pressure
-    }
-    data_to_send = {
-        "sensor":  pk,
-        "data":  data_dict,
-    }
-
-    return JsonResponse(data_to_send)
 
 
 @require_http_methods(["POST"])
