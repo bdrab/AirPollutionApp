@@ -78,8 +78,9 @@
                         <br>
             <input type="submit" value="Login"/>
         </form>
+        <p class="login-error-div"></p>
         <p>Haven't signed up yet?</p>
-        <a href="{% url 'register' %}">Sign up</a>
+        <button id="signUpButton">Sign Up!</button>
     </div>
     <div class="register-modal hide">
         <form method="POST" action="register/">
@@ -87,8 +88,9 @@
             {{form_register.as_p}}
             <input type="submit" value="Register"/>
         </form>
+        <p class="register-error-div"></p>
         <p>Already signed up?</p>
-        <a href="{% url 'login' %}">Login</a>
+        <button id="loginButton">Login!</button>
     </div>
     {% else %}
     <div class="settings-modal hide">
@@ -129,6 +131,15 @@
     {% endfor %}
     let favouriteSensors  = {{favouriteSensorsList|safe}}
     let allSensors = {{allSensors|safe}}
+    let warningMessages = [];
 </script>
+
+{% for message in messages %}
+    <script>
+        let mess  = "{{ message|safe }}".split(".");
+        warningMessages.push(mess);
+    </script>
+{% endfor %}
+
 
 {% endblock %}

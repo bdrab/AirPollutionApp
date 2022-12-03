@@ -7,9 +7,11 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .models import Sensor, Data, Favorite
 from .forms import SensorForm
+from django.contrib import messages
 
 
 def index(request):
+
     context = {}
     sensors = Sensor.objects.all()
 
@@ -35,7 +37,6 @@ def index(request):
         form_sensor = SensorForm()
         context["form_sensor"] = form_sensor
         user = User.objects.get(id=request.user.id)
-        # TODO: delete sensor from favourite list if sensor is delete from database
         favourite_sensors_list = {value.sensor.id: {'id': value.sensor.id,
                                                     'serial': value.sensor.serial,
                                                     'lat': float(value.sensor.lat),
@@ -53,7 +54,6 @@ def index(request):
 
 
 def login_page(request):
-
     if request.user.is_authenticated:
         return redirect('index')
 
@@ -63,16 +63,19 @@ def login_page(request):
 
         try:
             user = User.objects.get(username=username)
-
         except:
-            return render(request, 'website/login.html')
+            messages.error(request, 'LOGIN.User does not exist')
+            return redirect('index')
 
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
             return redirect('index')
 
-    return render(request, 'website/login.html')
+        messages.error(request, 'LOGIN.Incorrect password')
+        return redirect('index')
+
+    return redirect('index')
 
 
 def register_page(request):

@@ -26,7 +26,11 @@ const userFavouriteDIV = document.querySelector(".your-favourite-div")
 const expandAll = document.querySelector(".expand-all")
 const expandFavourite = document.querySelector(".expand-favourite")
 
+const loginBtn = document.querySelector("#loginButton")
+const signUpBtn = document.querySelector("#signUpButton")
 
+const loginErrorDiv = document.querySelector(".login-error-div")
+const registerErrorDiv = document.querySelector(".register-error-div")
 
 
 let chart;
@@ -74,6 +78,17 @@ showModals.addEventListener("click", event => {
         settingsModal.classList.toggle("hide");
     }
 })
+
+if (loginBtn){
+    loginBtn.addEventListener("click", e => {
+        loginModal.classList.remove("hide")
+        registerModal.classList.add("hide")
+    })
+    signUpBtn.addEventListener("click", e => {
+        registerModal.classList.remove("hide")
+        loginModal.classList.add("hide")
+    })
+}
 
 
 map.on('popupopen', async e => {
@@ -189,6 +204,9 @@ map.on('click', e => {
     loginModal && loginModal.classList.add("hide")
     registerModal && registerModal.classList.add("hide")
     settingsModal && settingsModal.classList.add("hide")
+    loginErrorDiv && (loginErrorDiv.textContent = "")
+    registerErrorDiv && (registerErrorDiv.textContent = "")
+
 
     setTimeout(function(){ map.invalidateSize()}, 100);
     deleteCharts();
@@ -264,13 +282,16 @@ if(favouriteSensorsDIV !== null){
             expandFavourite.src = "static/expand.png"
         }
     })
-
-
 updateFavourites();
 }
 
-
-
-
-
-
+warningMessages.forEach(message=>{
+    if(message[0] === "LOGIN"){
+        loginModal.classList.remove("hide")
+        loginErrorDiv.textContent = message[1]
+    }
+    if(message[0] === "REGISTER"){
+        registerModal.classList.remove("hide")
+        registerErrorDiv.textContent = message[1]
+    }
+})

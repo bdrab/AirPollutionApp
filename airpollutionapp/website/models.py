@@ -33,4 +33,4 @@ class Data(models.Model):
 
 class Favorite(models.Model):
     user = models.ForeignKey(User, related_name='favorites', on_delete=models.SET_NULL, null=True)
-    sensor = models.ForeignKey(Sensor, related_name='favorites', on_delete=models.SET_NULL, null=True)
+    sensor = models.ForeignKey(Sensor, related_name='favorites', on_delete=models.CASCADE, null=True)
