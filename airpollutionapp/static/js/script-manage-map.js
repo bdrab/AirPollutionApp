@@ -242,18 +242,15 @@ if(favouriteImg !== null){
             operation = "add";
             favouriteSensors[Number(sensorID.textContent)] = allSensors[sensorID.textContent]
         }
-        let response = await fetch('http://127.0.0.1:8000/modify-favourite/' + operation + '/' + sensorID.textContent);
+        let response = await fetch('http://127.0.0.1:8000/api/modify-favourite/' + operation + '/' + sensorID.textContent);
         data = await response.json();
         updateFavourites();
     })
 }
 if(favouriteSensorsDIV !== null){
     function updateFavourites(){
-        let contentHTML = ""
         favouriteSensorsDIV.innerHTML = ""
-
         for(const id in favouriteSensors){
-
             const li = document.createElement('li');
             li.setAttribute('class', "user-sensor");
             li.setAttribute('data-lat', favouriteSensors[id].lat);

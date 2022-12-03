@@ -54,9 +54,6 @@ def index(request):
 
 
 def login_page(request):
-    if request.user.is_authenticated:
-        return redirect('index')
-
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -112,22 +109,4 @@ def delete_sensor(request, sensorid):
     return redirect('index')
 
 
-@login_required
-def modify_favourite(request, operation, favouriteid):
 
-    response = {
-        "favourite":  favouriteid,
-        "operation":  operation,
-        "status": "failed"
-    }
-
-    if request.user.is_authenticated:
-        try:
-            favourite = Favorite.objects.get(sensor=Sensor.objects.get(id=favouriteid))
-        except Favorite.DoesNotExist:
-            Favorite.objects.create(user=User.objects.get(id=request.user.id), sensor=Sensor.objects.get(id=favouriteid))
-            return JsonResponse(response)
-
-        favourite.delete()
-    response["status"] = "successful"
-    return JsonResponse(response)

@@ -1,12 +1,36 @@
-from django.shortcuts import render
 from django.http.response import HttpResponse
-# Create your views here.
-from website.models import Sensor, Data, Favorite
+from website.models import Sensor, Favorite, User, Data
 from django.http import JsonResponse
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 def home_page(request):
     return HttpResponse("AirPollutionApp by Bartosz Drab")
+
+
+@csrf_exempt
+def add_data(request):
+    response = {
+        "result": "data sent successfully",
+    }
+    sensor = request.POST.get('sensor')
+    created = request.POST.get('created')
+    pm1 = request.POST.get('pm1')
+    pm25 = request.POST.get('pm25')
+    pm10 = request.POST.get('pm10')
+    temperature = request.POST.get('temperature')
+    pressure = request.POST.get('pressure')
+
+    try:
+        Data.objects.create(sensor=Sensor.objects.get(pk=sensor), created=created,
+                            pm1=pm1, pm25=pm25, pm10=pm10,
+                            temperature=temperature, pressure=pressure)
+    except:
+        response["result"] = "data sending failed"
+        return JsonResponse(response)
+
+    return JsonResponse(response)
 
 
 def return_data(request):
@@ -44,3 +68,23 @@ def return_data(request):
     }
 
     return JsonResponse(data_to_send)
+
+
+def modify_favourite(request, operation, favouriteid):
+
+    response = {
+        "favourite":  favouriteid,
+        "operation":  operation,
+        "status": "failed"
+    }
+
+    if request.user.is_authenticated:
+        try:
+            favourite = Favorite.objects.get(sensor=Sensor.objects.get(id=favouriteid))
+        except Favorite.DoesNotExist:
+            Favorite.objects.create(user=User.objects.get(id=request.user.id), sensor=Sensor.objects.get(id=favouriteid))
+            return JsonResponse(response)
+
+        favourite.delete()
+    response["status"] = "successful"
+    return JsonResponse(response)

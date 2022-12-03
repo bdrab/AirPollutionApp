@@ -8,7 +8,6 @@ urlpatterns = [
     path('register/', views.register_page, name="register"),
     path('logout/', views.user_logout, name="logout"),
     path('add-sensor/', views.add_sensor, name="add-sensor"),
-    path('delete-sensor/<int:sensorid>', views.delete_sensor, name="delete-sensor"),
-    path('modify-favourite/<str:operation>/<int:favouriteid>', views.modify_favourite, name="modify-favourite")
+    path('delete-sensor/<int:sensorid>', views.delete_sensor, name="delete-sensor")
 ]
 

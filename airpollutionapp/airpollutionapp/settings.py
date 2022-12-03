@@ -16,18 +16,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-bz*aibh_7f7@ir*&fpy-&(66er23)zv$w#4(^e8dscc-0t-dd('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-ALLOWED_HOSTS=['*',]
+ALLOWED_HOSTS = ['*', ]
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 CORS_ALLOW_ALL_ORIGINS = True
