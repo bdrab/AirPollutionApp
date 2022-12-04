@@ -92,7 +92,7 @@ if (loginBtn){
 map.on('popupopen', async e => {
     const marker = e.popup._source;
     mapa.style.filter = "blur(8px)"
-    let res = await fetch('http://127.0.0.1:8000/api/return-data/?q=' + marker.options.title);
+    let res = await fetch('http://192.168.0.136:8000/api/return-data/?q=' + marker.options.title);
     data = await res.json();
 
     if(favouriteImg){
@@ -244,7 +244,7 @@ if(favouriteImg !== null){
             operation = "add";
             favouriteSensors[Number(sensorID.textContent)] = allSensors[sensorID.textContent]
         }
-        let response = await fetch('http://127.0.0.1:8000/api/modify-favourite/' + operation + '/' + sensorID.textContent);
+        let response = await fetch('http://192.168.0.136:8000/api/modify-favourite/' + operation + '/' + sensorID.textContent);
         data = await response.json();
         updateFavourites();
     })

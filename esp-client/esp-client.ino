@@ -15,7 +15,6 @@ Adafruit_BME280 bme;
 
 
 String value_data;
-unsigned long delayTime;
   
 // "secret.h" file contains secret detail in below format:
 //const char* serverName = "";
@@ -24,7 +23,7 @@ unsigned long delayTime;
 
 
 unsigned long lastTime = 0;
-unsigned long timerDelay = 30000;
+unsigned long timerDelay = 900000;
 
 int incomingByte = 0; 
 const int MAX_FRAME_LEN = 64;
@@ -44,17 +43,17 @@ struct PMS7003_framestruct {
 } thisFrame;
 
 
-void setupDateTime() {
-  DateTime.setServer("0.pl.pool.ntp.org");
-  DateTime.setTimeZone("CET-1CEST,M3.5.0,M10.5.0/3");
-  DateTime.begin();
-  if (!DateTime.isTimeValid()) {
-    Serial.println("Failed to get time from server.");
-  } else {
-    Serial.printf("Date Now is %s\n", DateTime.toISOString().c_str());
-    Serial.printf("Timestamp is %ld\n", DateTime.now());
-  }
-}
+//void setupDateTime() {
+//  DateTime.setServer("0.pl.pool.ntp.org");
+//  DateTime.setTimeZone("CET-1CEST,M3.5.0,M10.5.0/3");
+//  DateTime.begin();
+//  if (!DateTime.isTimeValid()) {
+//    Serial.println("Failed to get time from server.");
+//  } else {
+//    Serial.printf("Date Now is %s\n", DateTime.toISOString().c_str());
+//    Serial.printf("Timestamp is %ld\n", DateTime.now());
+//  }
+//}
 
 void setup() {
   Serial.begin(9600);
@@ -69,7 +68,7 @@ void setup() {
   Serial.println("");
   Serial.print("Connected to WiFi network with IP Address: ");
   Serial.println(WiFi.localIP());
-  setupDateTime();
+//  setupDateTime();
 }
 
 
@@ -83,15 +82,15 @@ void loop() {
     //Check WiFi connection status
     value_data = "";
     doc.clear();
-    doc["time"] = String(DateTime.toISOString());
+//    doc["time"] = String(DateTime.toISOString());
+    doc["data"]["sensor"] = 1;
+    doc["data"]["pm1"] = thisFrame.concPM1_0_CF1;
+    doc["data"]["pm25"] = thisFrame.concPM2_5_CF1;
+    doc["data"]["pm10"] = thisFrame.concPM10_0_CF1;
     doc["data"]["temperature"] = bme.readTemperature();
     doc["data"]["pressure"] = bme.readPressure();
     doc["data"]["humidity"] = bme.readHumidity();
-    doc["data"]["pm1"] = thisFrame.concPM1_0_CF1;
-    doc["data"]["pm2.5"] = thisFrame.concPM2_5_CF1;
-    doc["data"]["pm10"] = thisFrame.concPM10_0_CF1;
-    doc["email"] = user_email;
-    doc["auth_key"] = auth_key;
+
     serializeJson(doc, value_data);
     Serial.println(value_data);
     if(WiFi.status()== WL_CONNECTED){
@@ -101,7 +100,6 @@ void loop() {
       http.begin(client, serverName);
       http.addHeader("Content-Type", "application/json");
       int httpResponseCode = http.POST(value_data);
-     
       Serial.print("HTTP Response code: ");
       Serial.print(httpResponseCode);
       Serial.print("Response: ");

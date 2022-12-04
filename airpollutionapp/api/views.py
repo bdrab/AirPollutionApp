@@ -1,8 +1,7 @@
-from django.http.response import HttpResponse
 from website.models import Sensor, Favorite, User, Data
-from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 def home_page(request):
@@ -14,12 +13,13 @@ def add_data(request):
     response = {
         "result": "data sent successfully",
     }
-    sensor = request.POST.get('sensor')
-    pm1 = request.POST.get('pm1')
-    pm25 = request.POST.get('pm25')
-    pm10 = request.POST.get('pm10')
-    temperature = request.POST.get('temperature')
-    pressure = request.POST.get('pressure')
+    data = json.loads(request.body)["data"]
+    sensor = data['sensor']
+    pm1 = data['pm1']
+    pm25 = data['pm25']
+    pm10 = data['pm10']
+    temperature = data['temperature']
+    pressure = data['pressure']
 
     try:
         Data.objects.create(sensor=Sensor.objects.get(pk=sensor),
