@@ -2,13 +2,16 @@
 
 
 Web service and electronic devices which can be used to monitor air pollution level.
-![main1](https://user-images.githubusercontent.com/97404833/205495825-29d20861-a0a7-4768-aefb-e0cd3e7acd42.JPG)
+![main](https://user-images.githubusercontent.com/97404833/205507625-b371b4ff-4ae6-4555-9cf1-838b75132509.JPG)
 
-![login1](https://user-images.githubusercontent.com/97404833/205495835-2f6ed882-eba6-46c6-8f8f-b0743a308b66.JPG)
+![login](https://user-images.githubusercontent.com/97404833/205507636-41b3f8c9-0f16-4d80-b16f-924a8d419852.JPG)
 
-![data1](https://user-images.githubusercontent.com/97404833/205495842-0c74654f-3ca1-41ac-9b2d-6eda5c0c506c.JPG)
 
-![settings1](https://user-images.githubusercontent.com/97404833/205495850-80625e59-7ce3-4613-927b-2660612626b7.JPG)
+![data1](https://user-images.githubusercontent.com/97404833/205507639-fe797dff-751b-4fa2-a2dc-e7af70b3a864.JPG)
+
+
+![settings1](https://user-images.githubusercontent.com/97404833/205507643-fb7e6cc7-593c-4028-90ce-a111f741f1b4.JPG)
+
 
 Device was designed and made using ESP32 board, PMS7003 air pollution sensor and BME280 temperature, pressure and humidity sensor. 
 
