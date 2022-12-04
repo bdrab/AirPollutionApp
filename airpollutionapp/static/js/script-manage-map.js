@@ -32,9 +32,7 @@ const signUpBtn = document.querySelector("#signUpButton")
 const loginErrorDiv = document.querySelector(".login-error-div")
 const registerErrorDiv = document.querySelector(".register-error-div")
 
-
-let chart;
-
+let charts = []
 
 function deleteCharts(){
     if(typeof chart !== "undefined"){
@@ -136,8 +134,6 @@ map.on('popupopen', async e => {
             }
             };
 
-
-
         options["series"] = [{
             name: "PM1",
             data: data.data.pm1,
@@ -146,7 +142,7 @@ map.on('popupopen', async e => {
 
         chart = new ApexCharts(document.querySelector(".chart0"), options);
         chart.render();
-
+        charts.push(chart)
 
 
         options["series"] = [{
@@ -156,6 +152,7 @@ map.on('popupopen', async e => {
         options["title"]["text"] = 'Air Pollution PM2.5 by Day'
         chart1 = new ApexCharts(document.querySelector(".chart1"), options);
         chart1.render();
+        charts.push(chart1)
 
 
 
@@ -166,6 +163,7 @@ map.on('popupopen', async e => {
         options["title"]["text"] = 'Air Pollution PM10 by Day'
         chart2 = new ApexCharts(document.querySelector(".chart2"), options);
         chart2.render();
+        charts.push(chart2)
 
 
 
@@ -176,6 +174,7 @@ map.on('popupopen', async e => {
         options["title"]["text"] = 'Temperature by Day'
         chart3 = new ApexCharts(document.querySelector(".chart3"), options);
         chart3.render();
+        charts.push(chart3)
 
 
 
@@ -186,12 +185,15 @@ map.on('popupopen', async e => {
         options["title"]["text"] = 'Pressure by Day'
         chart4 = new ApexCharts(document.querySelector(".chart4"), options);
         chart4.render();
+        charts.push(chart4)
+
     }else{
         chartsError.innerHTML = "<h5>No data available</h5>"
     }
 
     sensorID.textContent = marker.options.title;
     dataDiv.classList.toggle("hide");
+    console.log(charts)
 });
 
 

@@ -60,7 +60,7 @@ def login_page(request):
 
         try:
             user = User.objects.get(username=username)
-        except:
+        except User.DoesNotExist:
             messages.error(request, 'LOGIN.User does not exist')
             return redirect('index')
 

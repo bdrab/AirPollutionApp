@@ -106,6 +106,10 @@ html, body, #map {
     width: 98%;
 }
 
+.chart0{
+    padding-top: 20px;
+}
+
 /*
     Modals CSS
 */
@@ -130,11 +134,11 @@ html, body, #map {
     z-index: 9999;
     background: white;
     opacity: 1;
-    margin: 5% 10%;
     overflow-y: auto;
     height: 85vh;
-    width:80vw;
-    top: 0px;
+    width: 50vw;
+    top: 10%;
+    left: 25%;
     border-radius:26px;
     overflow-y: auto;
     text-align: center;
@@ -155,7 +159,7 @@ html, body, #map {
 	color:#ffffff;
 	font-family:Arial;
 	font-size:15px;
-	padding:10px 100px;
+	padding:10px 50px;
 	text-decoration:none;
 	text-shadow:0px 2px 0px #263666;
 }
@@ -169,5 +173,3 @@ html, body, #map {
 	position:relative;
 	top:1px;
 }
-
-

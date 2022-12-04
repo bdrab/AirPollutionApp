@@ -15,7 +15,6 @@ def add_data(request):
         "result": "data sent successfully",
     }
     sensor = request.POST.get('sensor')
-    created = request.POST.get('created')
     pm1 = request.POST.get('pm1')
     pm25 = request.POST.get('pm25')
     pm10 = request.POST.get('pm10')
@@ -23,7 +22,7 @@ def add_data(request):
     pressure = request.POST.get('pressure')
 
     try:
-        Data.objects.create(sensor=Sensor.objects.get(pk=sensor), created=created,
+        Data.objects.create(sensor=Sensor.objects.get(pk=sensor),
                             pm1=pm1, pm25=pm25, pm10=pm10,
                             temperature=temperature, pressure=pressure)
     except:

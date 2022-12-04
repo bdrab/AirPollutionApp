@@ -124,7 +124,6 @@
     {% endif %}
 
 <script src="{% static 'js/script-load-map.js' %}" ></script>
-
 <script >
     {% for marker in markers %}
         L.marker([{{marker.lat}}, {{marker.lon}}], {title:"{{marker.id}}"}).addTo(map).bindPopup("{{marker.popup}}");
@@ -133,13 +132,10 @@
     let allSensors = {{allSensors|safe}}
     let warningMessages = [];
 </script>
-
 {% for message in messages %}
     <script>
         let mess  = "{{ message|safe }}".split(".");
         warningMessages.push(mess);
     </script>
 {% endfor %}
-
-
 {% endblock %}
