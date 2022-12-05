@@ -32,6 +32,10 @@ const signUpBtn = document.querySelector("#signUpButton")
 const loginErrorDiv = document.querySelector(".login-error-div")
 const registerErrorDiv = document.querySelector(".register-error-div")
 
+const passwordField = document.querySelector("#password-field")
+const visibilityImg = document.querySelector(".visibility-img")
+
+
 let charts = []
 
 function deleteCharts(){
@@ -44,20 +48,97 @@ function deleteCharts(){
     }
 }
 
-if (buttons) {
-buttons.addEventListener("click", event => {
-    const nodes = fields.childNodes;
-    nodes.forEach(el => {
-        if (el.nodeName.toLowerCase() == 'div'){
-            if([...el.classList].includes(event.target.name)){
-                el.classList.remove("hide");
-            }
-            else{
-                el.classList.add("hide");
-            }
-     }
+if (user_logged === "True"){
+    buttons.addEventListener("click", event => {
+        const nodes = fields.childNodes;
+        nodes.forEach(el => {
+            if (el.nodeName.toLowerCase() == 'div'){
+                if([...el.classList].includes(event.target.name)){
+                    el.classList.remove("hide");
+                }
+                else{
+                    el.classList.add("hide");
+                }
+         }
+        })
     })
-})
+
+    userSensors.addEventListener("click", event => {
+        if([...event.target.classList].includes("user-sensor")){
+            map.setView([event.target.dataset.lat, event.target.dataset.lon], map.getZoom());
+        }
+    })
+
+    favouriteImg.addEventListener("click", async event => {
+        let operation = "";
+
+        if ([...event.target.classList].includes("favourite")){
+            event.target.src = "static/non-favourite.png";
+            event.target.classList.toggle("favourite");
+            operation = "delete"
+            delete favouriteSensors[Number(sensorID.textContent)];
+        }
+        else{
+            event.target.src = "static/favourite.png";
+            event.target.classList.toggle("favourite");
+            operation = "add";
+            favouriteSensors[Number(sensorID.textContent)] = allSensors[sensorID.textContent]
+        }
+        let response = await fetch('http://192.168.0.136:8000/api/modify-favourite/' + operation + '/' + sensorID.textContent);
+        data = await response.json();
+        updateFavourites();
+    })
+
+    function updateFavourites(){
+        favouriteSensorsDIV.innerHTML = ""
+        for(const id in favouriteSensors){
+            const li = document.createElement('li');
+            li.setAttribute('class', "user-sensor");
+            li.setAttribute('data-lat', favouriteSensors[id].lat);
+            li.setAttribute('data-lon', favouriteSensors[id].lon);
+            li.textContent = `${favouriteSensors[id].serial} --- ${favouriteSensors[id].description}`;
+            favouriteSensorsDIV.appendChild(li);
+        }
+    }
+
+    userSensorsButton.addEventListener("click", e => {
+        userSensorsDIV.classList.toggle("hide")
+        if (![...userSensorsDIV.classList].includes("hide")){
+            expandAll.src = "static/collapse.png"
+        }
+        else{
+            expandAll.src = "static/expand.png"
+        }
+    })
+
+    userFavouriteButton.addEventListener("click", e => {
+        userFavouriteDIV.classList.toggle("hide")
+        if (![...userFavouriteDIV.classList].includes("hide")){
+            expandFavourite.src = "static/collapse.png"
+        }
+        else{
+            expandFavourite.src = "static/expand.png"
+        }
+    })
+    updateFavourites();
+
+}else{
+    loginBtn.addEventListener("click", e => {
+        loginModal.classList.remove("hide")
+        registerModal.classList.add("hide")
+    })
+    signUpBtn.addEventListener("click", e => {
+        registerModal.classList.remove("hide")
+        loginModal.classList.add("hide")
+    })
+
+    visibilityImg.addEventListener("click", e =>{
+        console.log(visibilityImg)
+        visibilityImg.textContent = visibilityImg.textContent === "visibility" ? "visibility_off" : "visibility"
+        const type = passwordField.getAttribute("type") === "password" ? "text" : "password"
+        passwordField.setAttribute("type", type)
+    })
+
 }
 
 
@@ -76,17 +157,6 @@ showModals.addEventListener("click", event => {
         settingsModal.classList.toggle("hide");
     }
 })
-
-if (loginBtn){
-    loginBtn.addEventListener("click", e => {
-        loginModal.classList.remove("hide")
-        registerModal.classList.add("hide")
-    })
-    signUpBtn.addEventListener("click", e => {
-        registerModal.classList.remove("hide")
-        loginModal.classList.add("hide")
-    })
-}
 
 
 map.on('popupopen', async e => {
@@ -220,69 +290,6 @@ menu.addEventListener("click", e => {
     menuItems.classList.toggle("hide")
     })
 
-    if(userSensors !== null){
-    userSensors.addEventListener("click", event => {
-        if([...event.target.classList].includes("user-sensor")){
-            map.setView([event.target.dataset.lat, event.target.dataset.lon], map.getZoom());
-        }
-    })
-}
-
-if(favouriteImg !== null){
-    favouriteImg.addEventListener("click", async event => {
-        let operation = "";
-
-        if ([...event.target.classList].includes("favourite")){
-            event.target.src = "static/non-favourite.png";
-            event.target.classList.toggle("favourite");
-            operation = "delete"
-            delete favouriteSensors[Number(sensorID.textContent)];
-        }
-        else{
-            event.target.src = "static/favourite.png";
-            event.target.classList.toggle("favourite");
-            operation = "add";
-            favouriteSensors[Number(sensorID.textContent)] = allSensors[sensorID.textContent]
-        }
-        let response = await fetch('http://192.168.0.136:8000/api/modify-favourite/' + operation + '/' + sensorID.textContent);
-        data = await response.json();
-        updateFavourites();
-    })
-}
-if(favouriteSensorsDIV !== null){
-    function updateFavourites(){
-        favouriteSensorsDIV.innerHTML = ""
-        for(const id in favouriteSensors){
-            const li = document.createElement('li');
-            li.setAttribute('class', "user-sensor");
-            li.setAttribute('data-lat', favouriteSensors[id].lat);
-            li.setAttribute('data-lon', favouriteSensors[id].lon);
-            li.textContent = `${favouriteSensors[id].serial} --- ${favouriteSensors[id].description}`;
-            favouriteSensorsDIV.appendChild(li);
-        }
-    }
-
-    userSensorsButton.addEventListener("click", e => {
-        userSensorsDIV.classList.toggle("hide")
-        if (![...userSensorsDIV.classList].includes("hide")){
-            expandAll.src = "static/collapse.png"
-        }
-        else{
-            expandAll.src = "static/expand.png"
-        }
-    })
-
-    userFavouriteButton.addEventListener("click", e => {
-        userFavouriteDIV.classList.toggle("hide")
-        if (![...userFavouriteDIV.classList].includes("hide")){
-            expandFavourite.src = "static/collapse.png"
-        }
-        else{
-            expandFavourite.src = "static/expand.png"
-        }
-    })
-updateFavourites();
-}
 
 warningMessages.forEach(message=>{
     if(message[0] === "LOGIN"){
